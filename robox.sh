@@ -52,7 +52,7 @@ FILES="packer-cache.json "\
 "generic-docker.json generic-hyperv.json generic-vmware.json generic-libvirt.json generic-parallels.json generic-virtualbox.json "\
 "lineage-hyperv.json lineage-vmware.json lineage-libvirt.json lineage-virtualbox.json "\
 "developer-hyperv.json developer-vmware.json developer-libvirt.json developer-virtualbox.json "\
-"evil-hyperv.json evil-vmware.json evil-libvirt.json evil-virtualbox.json"
+"evilpot-hyperv.json evilpot-vmware.json evilpot-libvirt.json evilpot-virtualbox.json"
 
 # Media Files
 MEDIAFILES="res/media/rhel-server-6.10-x86_64-dvd.iso"\
@@ -71,7 +71,7 @@ ISOSUMS=(`grep -E "iso_checksum|guest_additions_sha256" $FILES | grep -v "iso_ch
 UNIQURLS=(`grep -E "iso_url|guest_additions_url" $FILES | grep -v -E "$MEDIAFILES" | awk -F'"' '{print $4}' | sort | uniq`)
 
 # Collect the list of box names.
-EVIL_BOXES=`grep -E '"name":' $FILES | awk -F'"' '{print $4}' | grep "evil-" | sort --field-separator=- -k 3i -k 2.1,2.0`
+EVIL_BOXES=`grep -E '"name":' $FILES | awk -F'"' '{print $4}' | grep "evilpot-" | sort --field-separator=- -k 3i -k 2.1,2.0`
 MAGMA_BOXES=`grep -E '"name":' $FILES | awk -F'"' '{print $4}' | grep "magma-" | sort --field-separator=- -k 3i -k 2.1,2.0`
 GENERIC_BOXES=`grep -E '"name":' $FILES | awk -F'"' '{print $4}' | grep "generic-" | sort --field-separator=- -k 3i -k 2.1,2.0`
 ROBOX_BOXES=`grep -E '"name":' $FILES | awk -F'"' '{print $4}' | grep "generic-" | sed "s/generic-/roboxes-/g"| sort --field-separator=- -k 3i -k 2.1,2.0`
@@ -315,8 +315,8 @@ function box() {
       [[ "$1" =~ ^.*lineage.*$ ]] && [[ "$1" =~ ^.*hyperv.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 lineage-hyperv.json
       export PACKER_LOG_PATH="$BASE/logs/developer-log-${TIMESTAMP}.txt"
       [[ "$1" =~ ^.*developer.*$ ]] && [[ "$1" =~ ^.*hyperv.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 developer-hyperv.json
-      export PACKER_LOG_PATH="$BASE/logs/evil-log-${TIMESTAMP}.txt"
-      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*hyperv.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evil-hyperv.json
+      export PACKER_LOG_PATH="$BASE/logs/evilpot-log-${TIMESTAMP}.txt"
+      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*hyperv.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evilpot-hyperv.json
 
   elif [[ `uname` == "Darwin" ]]; then
 
@@ -357,12 +357,12 @@ function box() {
       export PACKER_LOG_PATH="$BASE/logs/lineage-virtualbox-log-${TIMESTAMP}.txt"
       [[ "$1" =~ ^.*lineage.*$ ]] && [[ "$1" =~ ^.*virtualbox.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 lineage-virtualbox.json
 
-      export PACKER_LOG_PATH="$BASE/logs/evil-vmware-log-${TIMESTAMP}.txt"
-      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*vmware.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evil-vmware.json
-      export PACKER_LOG_PATH="$BASE/logs/evil-libvirt-log-${TIMESTAMP}.txt"
-      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*libvirt.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evil-libvirt.json
-      export PACKER_LOG_PATH="$BASE/logs/evil-virtualbox-log-${TIMESTAMP}.txt"
-      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*virtualbox.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evil-virtualbox.json
+      export PACKER_LOG_PATH="$BASE/logs/evilpot-vmware-log-${TIMESTAMP}.txt"
+      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*vmware.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evilpot-vmware.json
+      export PACKER_LOG_PATH="$BASE/logs/evilpot-libvirt-log-${TIMESTAMP}.txt"
+      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*libvirt.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evilpot-libvirt.json
+      export PACKER_LOG_PATH="$BASE/logs/evilpot-virtualbox-log-${TIMESTAMP}.txt"
+      [[ "$1" =~ ^.*evil.*$ ]] && [[ "$1" =~ ^.*virtualbox.*$ ]] && packer build -on-error=cleanup -parallel=false -only=$1 evilpot-virtualbox.json
 
   fi
 }
@@ -417,10 +417,10 @@ function validate() {
   verify_json lineage-vmware
   verify_json lineage-libvirt
   verify_json lineage-virtualbox
-  verify_json evil-hyperv
-  verify_json evil-vmware
-  verify_json evil-libvirt
-  verify_json evil-virtualbox
+  verify_json evilpot-hyperv
+  verify_json evilpot-vmware
+  verify_json evilpot-libvirt
+  verify_json evilpot-virtualbox
 }
 
 function missing() {
@@ -707,11 +707,11 @@ function lineage() {
 
 function evil() {
   if [[ $OS == "Windows_NT" ]]; then
-    build evil-hyperv
+    build evilpot-hyperv
   else
-    build evil-vmware
-    build evil-libvirt
-    build evil-virtualbox
+    build evilpot-vmware
+    build evilpot-libvirt
+    build evilpot-virtualbox
   fi
 }
 
@@ -730,13 +730,13 @@ function vmware() {
   verify_json magma-vmware
   verify_json developer-vmware
   verify_json lineage-vmware
-  verify_json evil-vmware
+  verify_json evilpot-vmware
 
   build generic-vmware
   build magma-vmware
   build developer-vmware
   build lineage-vmware
-  build evil-vmware
+  build evilpot-vmware
 }
 function hyperv() {
 
@@ -748,7 +748,7 @@ function hyperv() {
     verify_json magma-hyperv
     verify_json developer-hyperv
     verify_json lineage-hyperv
-    verify_json evil-hyperv
+    verify_json evilpot-hyperv
 
     # Build the generic boxes first.
     for ((i = 0; i < ${#LIST[@]}; ++i)); do
@@ -789,7 +789,7 @@ function hyperv() {
     # Build the Evil boxes fifth.
     for ((i = 0; i < ${#LIST[@]}; ++i)); do
       if [[ "${LIST[$i]}" =~ ^(evil)-[a-z]*[0-9]*-hyperv$ ]]; then
-        packer build -parallel=false -except="${EXCEPTIONS}" -only="${LIST[$i]}" evil-hyperv.json
+        packer build -parallel=false -except="${EXCEPTIONS}" -only="${LIST[$i]}" evilpot-hyperv.json
       fi
     done
 
@@ -803,13 +803,13 @@ function libvirt() {
   verify_json magma-libvirt
   verify_json developer-libvirt
   verify_json lineage-libvirt
-  verify_json evil-libvirt
+  verify_json evilpot-libvirt
 
   build generic-libvirt
   build magma-libvirt
   build developer-libvirt
   build lineage-libvirt
-  build evil-libvirt
+  build evilpot-libvirt
 }
 
 function parallels() {
@@ -846,13 +846,13 @@ function virtualbox() {
   verify_json magma-virtualbox
   verify_json developer-virtualbox
   verify_json lineage-virtualbox
-  verify_json evil-virtualbox
+  verify_json evilpot-virtualbox
 
   build generic-virtualbox
   build magma-virtualbox
   build developer-virtualbox
   build lineage-virtualbox
-  build evil-virtualbox
+  build evilpot-virtualbox
 }
 
 function builder() {
@@ -932,10 +932,10 @@ elif [[ $1 == "lineage-hyperv" || $1 == "lineage-hyperv.json" ]]; then build lin
 elif [[ $1 == "lineage-libvirt" || $1 == "lineage-libvirt.json" ]]; then build lineage-libvirt
 elif [[ $1 == "lineage-virtualbox" || $1 == "lineage-virtualbox.json" ]]; then build lineage-virtualbox
 
-elif [[ $1 == "evil-vmware" || $1 == "evil-vmware.json" ]]; then build evil-vmware
-elif [[ $1 == "evil-hyperv" || $1 == "evil-hyperv.json" ]]; then build evil-hyperv
-elif [[ $1 == "evil-libvirt" || $1 == "evil-libvirt.json" ]]; then build evil-libvirt
-elif [[ $1 == "evil-virtualbox" || $1 == "evil-virtualbox.json" ]]; then build evil-virtualbox
+elif [[ $1 == "evilpot-vmware" || $1 == "evilpot-vmware.json" ]]; then build evilpot-vmware
+elif [[ $1 == "evilpot-hyperv" || $1 == "evilpot-hyperv.json" ]]; then build evilpot-hyperv
+elif [[ $1 == "evilpot-libvirt" || $1 == "evilpot-libvirt.json" ]]; then build evilpot-libvirt
+elif [[ $1 == "evilpot-virtualbox" || $1 == "evilpot-virtualbox.json" ]]; then build evilpot-virtualbox
 
 # Build a specific box.
 elif [[ $1 == "box" ]]; then box $2
