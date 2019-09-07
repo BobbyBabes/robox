@@ -1,6 +1,8 @@
 
 # Roboxes
 
+The tools needed to robotically create/configure/provision a large number of operating systems, for a variety of type 2 hypervisors, using packer.
+
 Generic base boxes, providing a variety of operating systems, and available across a number of different virtualized platforms.
 
 ## Website
@@ -17,6 +19,7 @@ https://hub.docker.com/u/lavabit/
 
 The templates in this repo require a current version of packer, (1.3.4+) and in some cases, make use of features which haven't been officially merged and/or released yet. Use the res/providers/packer.sh script to build an appropriately patched packer binary.
 
+<<<<<<< HEAD
 ## Pending Tasks
 
 Add retry function to scripts and wrap yum/apt/apk/pacman/etc (prototype in silent.sh already)  
@@ -26,6 +29,18 @@ Add upload/delete/release functions to robox.sh
 Add vagrant user password randomization logic to the bundled Vagrantfiles  
 Add init based test, and SSH command test to the box test and check script  
 Ad `IPQoS lowdelay throughput` to the relevant configs to solve the [OpenSSH bug](https://github.com/hashicorp/vagrant/issues/10730)
+=======
+## Upcoming Boxes
+Debian 10 Buster
+Parrot
+Backbox
+Pentoo
+Kali
+Subgraph OS
+Tails
+Arch Assault
+
+>>>>>>> 5d3687abf64d4b27c5acc2d93aa6f65a166be72b
 
 
 ## Pending Additions
@@ -56,6 +71,7 @@ Slackware
 MacOS  
 ReactOS  
 Windows  
+<<<<<<< HEAD
 
 Tails  
 Kali  
@@ -74,3 +90,6 @@ Bitcoin Cash
 qqxyedtn68jg84w4mkd3vsw2nu6pgkydnudza0ed0m
 
 [Robxes](https://roboxes.org) is maintained by Ladar Levison, with infrastructure provided by [Hacking and Coffee LLC](https://hackingand.coffee), and [Lavabit LLC](https://lavabit.com).
+=======
+  
+>>>>>>> 5d3687abf64d4b27c5acc2d93aa6f65a166be72b
